@@ -1,6 +1,6 @@
-# nuxt_blog
+# blackinitial.github.io
 
-> personal website made with nuxtjs
+> personal website [blackinitial](https://blackinitial.github.io) made with nuxtjs
 
 ## Build Setup
 
