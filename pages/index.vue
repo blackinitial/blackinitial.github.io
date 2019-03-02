@@ -5,31 +5,36 @@
       <h1 class="title">
         nuxt_blog
       </h1>
+
       <h2 class="subtitle">
         personal website made with nuxtjs
       </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >GitHub</a>
-      </div>
+
+      <BlogSection :blogs="blogs" />
     </div>
   </section>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
+import BlogSection from '~/components/Sections/BlogList'
+
+const blogs = ['blog-1', 'blog-2']
 
 export default {
   components: {
-    Logo
+    Logo,
+    BlogSection
+  },
+
+  asyncData() {
+    async function asyncImport(blogName) {
+      const listBlog = await import(`~/contents/blog/${blogName}.md`)
+      return listBlog.attributes
+    }
+    return Promise.all(blogs.map(blog => asyncImport(blog))).then(res => {
+      return { blogs: res }
+    })
   }
 }
 </script>

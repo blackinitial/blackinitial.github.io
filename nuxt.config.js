@@ -1,3 +1,4 @@
+const path = require('path')
 const pkg = require('./package')
 
 module.exports = {
@@ -53,6 +54,17 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      // markdown generator
+      config.module.rules.push({
+        test: /\.md$/,
+        loader: 'frontmatter-markdown-loader',
+        include: path.resolve(__dirname, 'contents'),
+        options: {
+          vue: {
+            root: 'dynamicMarkdown'
+          }
+        }
+      })
     }
   }
 }
