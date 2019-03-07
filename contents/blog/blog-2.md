@@ -9,11 +9,11 @@ tags:
   - tag1
   - tag2
 ---
-# sample blog 2
+## sample blog 2
 
 sample blog 2 ,
 
-## contoh code javascript
+### contoh code javascript
 ini contoh higlight javascript
 
 ```javascript

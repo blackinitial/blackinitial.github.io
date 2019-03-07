@@ -16,6 +16,7 @@
     "@nuxtjs/pwa": "^2.6.0",
     "cross-env": "^5.2.0",
     "highlight.js": "^9.15.6",
+    "normalize.css": "^8.0.1",
     "nuxt": "^2.4.0"
   },
   "devDependencies": {
@@ -33,7 +34,11 @@
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^5.0.0",
     "frontmatter-markdown-loader": "^1.6.0",
+    "node-sass": "^4.11.0",
     "nodemon": "^1.18.9",
-    "prettier": "1.14.3"
+    "prettier": "1.14.3",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^7.1.0"
   }
 }

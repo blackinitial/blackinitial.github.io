@@ -10,13 +10,13 @@ tags:
   - tag2
 ---
 
-# Sample Blog 1
+## Sample Blog 1
 
 isi sample blog 1
 
-## contoh code 
+### contoh code 
 
-### css
+#### css
 
 ```css
 @font-face {

@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Anton|Roboto');
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 1rem;
+	height: 100vh;
+	width: 100vw;
+	color: $color-text;
+	background-color: $color-bg;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0 5rem;
+}
+
+.content {
+	padding-top: 5rem;
+}
+
+.single-post {
+	.head-post {
+		border-bottom: 1px solid $color-bg;
+		margin-bottom: 2rem;
+		.meta {
+			margin: 1rem 0;
+			span {
+				margin-right: 10px;
+			}
+			.tag {
+				background: rgba($color-text, 0.5);
+				color: $color-bg;
+				border-radius: 1rem;
+				padding: 5px 15px;
+				font-size: 80%;
+			}
+		}
+	}
+}

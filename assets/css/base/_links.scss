@@ -1,0 +1,13 @@
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: $color-text;
+  transition: all 0.25s ease;
+  &:hover,
+  &.active,
+  &:focus {
+    outline: 0;
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+}

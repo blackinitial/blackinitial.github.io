@@ -1,20 +1,27 @@
-<template>
-  <div class="container">
-    <h2>{{ title }}</h2>
-    <p>{{ description }}</p>
-    <br>
-    <Markdown
-      :render-func="renderFunc"
-      :static-render-funcs="staticRenderFuncs"
-    />
-  </div>
+<template lang="pug">
+  main
+    NavBack
+    .container
+      .content.single-post
+        .head-post
+          h1 {{ title }}
+          .meta
+            span {{ new Date(date).toDateString('id-ID') }}
+            span.tag(v-for="tag in tags") {{ tag }}
+          h6 {{ description }}
+          br
+        markdown(:render-func='renderFunc', :static-render-funcs='staticRenderFuncs')
 </template>
 
 <script>
+import NavBack from '~/components/NavBack.vue'
 import Markdown from '~/components/Markdown.vue'
 
 export default {
-  components: { Markdown },
+  components: {
+    NavBack,
+    Markdown
+  },
 
   data: () => ({
     templateRender: null
@@ -33,6 +40,8 @@ export default {
     return {
       name: params.slug,
       title: attr.title,
+      date: attr.date,
+      tags: attr.tags,
       color: attr.color,
       description: attr.description,
       renderFunc: file.vue.render,

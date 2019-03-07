@@ -1,18 +1,23 @@
-<template>
-  <div class="page-blog">
-    <div class="container">
-      <BlogSection :blogs="blogs" />
-    </div>
-  </div>
+<template lang="pug">
+  main
+    Navigation(
+      prev="/"
+      next="about"
+    )
+    .container
+      .content
+        blog-section(:blogs="blogs")
 </template>
 
 <script>
+import Navigation from '~/components/Navigation.vue'
 import BlogSection from '~/components/Sections/BlogList'
 
 const blogs = ['blog-1', 'blog-2']
 
 export default {
   components: {
+    Navigation,
     BlogSection
   },
 

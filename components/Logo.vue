@@ -1,79 +1,37 @@
-<template>
-  <div class="VueToNuxtLogo">
-    <div class="Triangle Triangle--two" />
-    <div class="Triangle Triangle--one" />
-    <div class="Triangle Triangle--three" />
-    <div class="Triangle Triangle--four" />
-  </div>
+<template lang="pug">
+  header
+    nuxt-link(to="/" class="logo")
+      span.logo-type Black Initial
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-2 -2 47 47" aria-labelledby="title" role="presentation">
+        <title id="title" lang="en">Typographie Logo</title>
+        <g>
+          <path d="M21,1A21,21,0,1,0,42,21,21,21,0,0,0,21,1ZM31,24,22,30H21L11,24h0L21,12h1L32,23h0Z" transform="translate(-1 -1)" fill="#808285"/>
+          <polygon points="20 28 20 13 12 23 20 28" fill="#808285" stroke="#231f20" stroke-miterlimit="10"/>
+          <polygon points="21 28 29 23 21 13 21 28" fill="#808285" stroke="#231f20" stroke-miterlimit="10"/>
+        </g>
+      </svg>
 </template>
 
-<style>
-.VueToNuxtLogo {
-  display: inline-block;
-  animation: turn 2s linear forwards 1s;
-  transform: rotateX(180deg);
-  position: relative;
-  overflow: hidden;
-  height: 180px;
-  width: 245px;
-}
-
-.Triangle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-}
-
-.Triangle--one {
-  border-left: 105px solid transparent;
-  border-right: 105px solid transparent;
-  border-bottom: 180px solid #41b883;
-}
-
-.Triangle--two {
-  top: 30px;
-  left: 35px;
-  animation: goright 0.5s linear forwards 3.5s;
-  border-left: 87.5px solid transparent;
-  border-right: 87.5px solid transparent;
-  border-bottom: 150px solid #3b8070;
-}
-
-.Triangle--three {
-  top: 60px;
-  left: 35px;
-  animation: goright 0.5s linear forwards 3.5s;
-  border-left: 70px solid transparent;
-  border-right: 70px solid transparent;
-  border-bottom: 120px solid #35495e;
-}
-
-.Triangle--four {
-  top: 120px;
-  left: 70px;
-  animation: godown 0.5s linear forwards 3s;
-  border-left: 35px solid transparent;
-  border-right: 35px solid transparent;
-  border-bottom: 60px solid #fff;
-}
-
-@keyframes turn {
-  100% {
-    transform: rotateX(0deg);
+<style lang="scss">
+.logo {
+  position: fixed;
+  top: 10px;
+  right: 30px;
+  font-size: 2rem;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  &:hover {
+    opacity: 0.8;
+    transition: 0.25 opacity ease;
   }
 }
-
-@keyframes godown {
-  100% {
-    top: 180px;
-  }
-}
-
-@keyframes goright {
-  100% {
-    left: 70px;
-  }
+.logo-type {
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  padding-right: 5px;
+  text-transform: uppercase;
+  vertical-align: super;
 }
 </style>
