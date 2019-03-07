@@ -3,7 +3,7 @@ i<template>
     <h2>Blog List</h2>
 
     <div v-for="blog in blogs" :key="blog.title">
-      <nuxt-link :to="{ name: 'blog-slug', params: { slug: blog.name }}">
+      <nuxt-link :to="{ name: 'blog-slug', params: { slug: blog.slug }}">
         <h4>{{ blog.title }}</h4>
         <p>{{ blog.description }}</p>
       </nuxt-link>
