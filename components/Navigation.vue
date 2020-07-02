@@ -10,10 +10,29 @@
 </template>
 
 <script>
+import { TweenMax } from 'gsap'
+
 export default {
   props: {
     prev: { type: String, default: '' },
     next: { type: String, default: '' }
+  },
+
+  mounted() {
+    TweenMax.from('.nav-prev', 1, {
+      autoAlpha: 0,
+      y: '40'
+    })
+
+    TweenMax.from('.nav-current', 1, {
+      scale: 0.9,
+      transformOrigin: '50% 50%'
+    })
+
+    TweenMax.from('.nav-next', 1, {
+      autoAlpha: 0,
+      y: '-40'
+    })
   }
 }
 </script>
@@ -30,6 +49,7 @@ export default {
   align-items: center;
   padding: 5rem 0;
   margin-left: 2rem;
+  z-index: 99;
   .nav-current {
     font-size: 0.8rem;
     text-transform: uppercase;

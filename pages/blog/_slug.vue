@@ -1,19 +1,21 @@
 <template lang="pug">
   main
-    NavBack
     .container
       .content.single-post
-        .head-post
-          h1 {{ title }}
+        NavBack#back
+
+        .head-post#title
+          h1.is-uppercase {{ title }}
           .meta
             span {{ new Date(date).toDateString('id-ID') }}
             span.tag(v-for="tag in tags") {{ tag }}
           h6 {{ description }}
           br
-        markdown(:render-func='renderFunc', :static-render-funcs='staticRenderFuncs')
+        markdown#content(:render-func='renderFunc', :static-render-funcs='staticRenderFuncs')
 </template>
 
 <script>
+import { TimelineMax, TweenMax, Sine } from 'gsap'
 import NavBack from '~/components/NavBack.vue'
 import Markdown from '~/components/Markdown.vue'
 
@@ -21,6 +23,75 @@ export default {
   components: {
     NavBack,
     Markdown
+  },
+
+  transition: {
+    mode: 'out-in',
+    css: false,
+    enter(el, done) {
+      const tl = new TimelineMax({ onComplete: done })
+
+      tl.from(
+        '#back',
+        0.5,
+        {
+          opacity: 0,
+          x: 25,
+          transformOrigin: '0',
+          ease: Sine.easeOut
+        },
+        0.25
+      )
+
+      TweenMax.from(
+        '#title',
+        0.5,
+        {
+          autoAlpha: 0,
+          y: '30'
+        },
+        0
+      )
+
+      TweenMax.from(
+        '#content',
+        0.5,
+        {
+          autoAlpha: 0,
+          x: '-30'
+        },
+        0
+      )
+    },
+    leave(el, done) {
+      const tl = new TimelineMax({ onComplete: done })
+
+      tl.to('#back', 0.5, {
+        opacity: 0,
+        x: 25,
+        ease: Sine.easeIn
+      })
+
+      TweenMax.to(
+        '#title',
+        0.5,
+        {
+          autoAlpha: 0,
+          y: '30'
+        },
+        0
+      )
+
+      TweenMax.to(
+        '#content',
+        0.5,
+        {
+          autoAlpha: 0,
+          x: '-30'
+        },
+        0
+      )
+    }
   },
 
   data: () => ({

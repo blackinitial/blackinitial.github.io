@@ -1,6 +1,6 @@
 <template lang="pug">
   main
-    Navigation(
+    Navigation#nav(
       prev="/"
       next="about"
     )
@@ -10,10 +10,11 @@
 </template>
 
 <script>
+import { TimelineMax, Sine } from 'gsap'
 import Navigation from '~/components/Navigation.vue'
 import BlogSection from '~/components/Sections/BlogList'
 
-const blogs = ['blog-1', 'blog-2']
+import blogList from '~/contents/blogList.js'
 
 export default {
   components: {
@@ -21,12 +22,25 @@ export default {
     BlogSection
   },
 
+  transition: {
+    mode: 'out-in',
+    css: false,
+    leave(el, done) {
+      const tl = new TimelineMax({ onComplete: done })
+
+      tl.to('.container', 0.5, {
+        opacity: 0,
+        ease: Sine.easeInOut
+      })
+    }
+  },
+
   asyncData() {
     async function asyncImport(blogName) {
       const listBlog = await import(`~/contents/blog/${blogName}.md`)
       return listBlog.attributes
     }
-    return Promise.all(blogs.map(blog => asyncImport(blog))).then(res => {
+    return Promise.all(blogList.map(blog => asyncImport(blog))).then(res => {
       return { blogs: res }
     })
   }
