@@ -15,10 +15,10 @@
   "dependencies": {
     "@nuxtjs/pwa": "^2.6.0",
     "cross-env": "^5.2.0",
-    "gsap": "^2.1.2",
-    "highlight.js": "^9.15.6",
-    "normalize.css": "^8.0.1",
-    "nuxt": "^2.4.0"
+    "gsap": "2.1.2",
+    "highlight.js": "9.15.6",
+    "normalize.css": "8.0.1",
+    "nuxt": "2.12.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
