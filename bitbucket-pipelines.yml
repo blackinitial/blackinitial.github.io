@@ -14,6 +14,8 @@ pipelines:
     master:
     - step:
         name: Deploy to Registry
+        services:
+        - docker
         script:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
         - docker build -t $IMAGE_NAME .
@@ -22,6 +24,8 @@ pipelines:
         
     - step:
         name: Deploy to Digital Ocean
+        services:
+        - docker
         script:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
         - pipe: atlassian/ssh-run:0.2.2
@@ -31,5 +35,3 @@ pipelines:
             COMMAND: >
               docker stop $CONTAINERS_TO_STOP
               docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME
-        services:
-        - docker
