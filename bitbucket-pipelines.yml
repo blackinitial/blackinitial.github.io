@@ -33,5 +33,5 @@ pipelines:
             SSH_USER: $SSH_USER
             SERVER: $SSH_SERVER
             COMMAND: >
-              docker stop $CONTAINERS_TO_STOP
+              docker stop $CONTAINERS_TO_STOP || true
               docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME
