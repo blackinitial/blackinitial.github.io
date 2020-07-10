@@ -28,6 +28,7 @@ pipelines:
         - docker
         script:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
+        - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
         - pipe: atlassian/ssh-run:0.2.2
           variables:
             SSH_USER: $SSH_USER
