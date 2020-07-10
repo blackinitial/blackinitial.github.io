@@ -16,6 +16,8 @@ pipelines:
         name: Deploy to Registry
         services:
         - docker
+        caches:
+        - docker
         script:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
         - docker build -t $IMAGE_NAME .
@@ -26,6 +28,8 @@ pipelines:
         name: Deploy to Digital Ocean
         services:
         - docker
+        caches:
+        - docker
         script:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
         - pipe: atlassian/ssh-run:0.2.2
@@ -33,7 +37,7 @@ pipelines:
             SSH_USER: $SSH_USER
             SERVER: $SSH_SERVER
             COMMAND: >
-              docker stop $CONTAINERS_TO_STOP
+              docker stop $CONTAINERS_TO_STOP && docker rm -v $CONTAINERS_TO_STOP
               docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD;
               docker pull $IMAGE_NAME;
               docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME
