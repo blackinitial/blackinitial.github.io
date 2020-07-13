@@ -13,16 +13,18 @@ pipelines:
   branches:
     master:
     - step:
-        name: Deploy to Registry
+        name: Deploy to Docker Hub Registry
         services:
         - docker
         caches:
         - docker
         script:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
+        - export IMAGE_NAME_LATEST=blackinitial/blackinitial-site:latest
         - docker build -t $IMAGE_NAME .
         - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
         - docker push $IMAGE_NAME
+        - docker push $IMAGE_NAME_LATEST
         
     - step:
         name: Deploy to Digital Ocean
@@ -31,7 +33,7 @@ pipelines:
         caches:
         - docker
         script:
-        - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
+        - export IMAGE_NAME_LATEST=blackinitial/blackinitial-site:latest
         - pipe: atlassian/ssh-run:0.2.2
           variables:
             SSH_USER: $SSH_USER
@@ -40,4 +42,4 @@ pipelines:
               docker stop $CONTAINERS_TO_STOP && docker rm -v $CONTAINERS_TO_STOP
               docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD;
               docker pull $IMAGE_NAME;
-              docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME
+              docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME --name blackinitial-site
