@@ -22,6 +22,7 @@ pipelines:
         - export IMAGE_NAME=blackinitial/blackinitial-site:$BITBUCKET_COMMIT
         - export IMAGE_NAME_LATEST=blackinitial/blackinitial-site:latest
         - docker build -t $IMAGE_NAME .
+        - docker build -t $IMAGE_NAME_LATEST .
         - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
         - docker push $IMAGE_NAME
         - docker push $IMAGE_NAME_LATEST
