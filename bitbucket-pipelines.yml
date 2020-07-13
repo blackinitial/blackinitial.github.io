@@ -42,5 +42,5 @@ pipelines:
             COMMAND: >
               docker stop $CONTAINERS_TO_STOP && docker rm -v $CONTAINERS_TO_STOP
               docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD;
-              docker pull $IMAGE_NAME;
+              docker pull $IMAGE_NAME_LATEST;
               docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME --name blackinitial-site
