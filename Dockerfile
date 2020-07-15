@@ -1,13 +1,6 @@
 # Dockerfile
 FROM node:13-alpine
 
-# # create destination directory
-# RUN mkdir -p /usr/src/nuxt-app
-# WORKDIR /usr/src/nuxt-app
-
-# # copy the app, note .dockerignore
-# COPY . /usr/src/nuxt-app/
-
 WORKDIR /usr/src/app
 COPY . ./
 
