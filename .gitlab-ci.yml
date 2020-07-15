@@ -10,7 +10,7 @@ stages:
 release:
   stage: release
   services:
-    - docker
+    - docker:dind
   before_script:
     - docker version
     - "docker info"
@@ -26,7 +26,7 @@ deploy:
   stage: deploy
   environment: production
   services:
-    - docker
+    - docker:dind
   before_script:
     - docker -v
     - mkdir -p ~/.ssh
