@@ -30,6 +30,7 @@ deploy:
   services:
     - docker:dind
   before_script:
+    - hostname -I | awk '{print $1}'
     - docker -v
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
