@@ -16,7 +16,6 @@ variables:
 before_script:
   - echo "Before script..."
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - apt-get -y install zip unzip
   - eval $(ssh-agent -s)
   - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   - mkdir -p ~/.ssh
