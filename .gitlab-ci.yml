@@ -1,43 +1,37 @@
 image: node:13.11.0
+
 cache:
   paths:
   - node_modules/
 
 stages:
-  - release
+  - build
   - deploy
 
-release:
-  stage: release
-  image: docker:latest
-  services:
-    - docker:dind
-  before_script:
-    - docker version
-    - "docker info"
-    - "docker login -u $CI_REGISTRY_USER -p $CI_BUILD_TOKEN $CI_REGISTRY"
+variables:
+  IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+  DEPLOY_HOST: 'root@$DEPLOY_SSH_SERVER'
+  PORT: 3000
+
+before_script:
+  - echo "Before script..."
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - apt-get -y install zip unzip
+  - eval $(ssh-agent -s)
+  - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.
+  
+build:
+  stage: build
   script:
-    - export IMAGE_NAME=${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+    - echo "Initialize build task..."
+    - "docker login -u $CI_REGISTRY_USER -p $CI_BUILD_TOKEN $CI_REGISTRY"
     - "docker build -t $IMAGE_NAME ."
     - "docker push $IMAGE_NAME"
-  after_script:
-    - "docker logout ${CI_REGISTRY}"
+    - echo "Finalized build task..."
 
 deploy:
   stage: deploy
-  image: docker:latest
-  environment: production
-  services:
-    - docker:dind
-  before_script:
-    - hostname -I | awk '{print $1}'
-    - docker -v
-    - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - eval "$(ssh-agent -s)"
-    - ssh-add ~/.ssh/id_rsa
-    - ssh-keyscan -H $DEPLOY_SSH_SERVER >> ~/.ssh/known_hosts
   script:
-    - export IMAGE_NAME=${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
-    - ssh root@$DEPLOY_SSH_SERVER "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $IMAGE_NAME; docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME"
+    - ssh DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $IMAGE_NAME; docker run -p $PORT:$PORT -d $IMAGE_NAME"

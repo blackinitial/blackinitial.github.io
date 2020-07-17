@@ -1,0 +1,43 @@
+image: node:13.11.0
+cache:
+  paths:
+  - node_modules/
+
+stages:
+  - release
+  - deploy
+
+release:
+  stage: release
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker version
+    - "docker info"
+    - "docker login -u $CI_REGISTRY_USER -p $CI_BUILD_TOKEN $CI_REGISTRY"
+  script:
+    - export IMAGE_NAME=${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+    - "docker build -t $IMAGE_NAME ."
+    - "docker push $IMAGE_NAME"
+  after_script:
+    - "docker logout ${CI_REGISTRY}"
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  environment: production
+  services:
+    - docker:dind
+  before_script:
+    - hostname -I | awk '{print $1}'
+    - docker -v
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $DEPLOY_SSH_SERVER >> ~/.ssh/known_hosts
+  script:
+    - export IMAGE_NAME=${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+    - ssh root@$DEPLOY_SSH_SERVER "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $IMAGE_NAME; docker run -p $SERVER_PORT:$SERVER_PORT -d $IMAGE_NAME"
