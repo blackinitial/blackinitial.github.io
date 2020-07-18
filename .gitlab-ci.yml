@@ -29,6 +29,7 @@ deploy:
   before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - eval $(ssh-agent -s)
+  - ls ~/.ssh -la
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
