@@ -15,19 +15,10 @@ variables:
   DEPLOY_HOST: 'root@$DEPLOY_SSH_SERVER'
   PORT: 3000
 
-before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - eval $(ssh-agent -s)
-  - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa
-  - ssh-add ~/.ssh/id_rsa
-  - ssh-keyscan -H $DEPLOY_SSH_SERVER >> ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  
 build:
   stage: build
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:latest || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
@@ -35,5 +26,13 @@ build:
 
 deploy:
   stage: deploy
+  before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - ssh-add ~/.ssh/id_rsa
+  - ssh-keyscan -H $DEPLOY_SSH_SERVER >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
