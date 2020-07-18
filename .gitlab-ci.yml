@@ -36,5 +36,4 @@ build:
 deploy:
   stage: deploy
   script:
-    - ssh $DEPLOY_HOST
-    - echo 'enter DO server'
+    - ssh $DEPLOY_HOST "echo 'enter DO server'"
