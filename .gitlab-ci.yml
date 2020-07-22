@@ -42,4 +42,4 @@ deploy:
     - echo "$DEPLOY_SERVER_PRIVATE_KEY"
     - echo "$DEPLOY_HOST"
   script:
-    - ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
+    - ssh -A $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
