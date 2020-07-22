@@ -27,19 +27,11 @@ build:
 deploy:
   stage: deploy
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ls ~/.ssh -la
     - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - cat ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
     - ssh-add ~/.ssh/id_rsa
     - ssh-keyscan -H $DEPLOY_SSH_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - cat ~/.ssh/known_hosts
-    - echo "$DEPLOY_SERVER_PRIVATE_KEY"
-    - echo "$DEPLOY_HOST"
   script:
     - ssh -A $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
