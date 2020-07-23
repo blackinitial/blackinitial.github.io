@@ -34,8 +34,7 @@ deploy:
     - ls ~/.ssh -la
     - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - cat ~/.ssh/id_rsa
-    - ssh-add ~/.ssh/
+    - ssh-add ~/.ssh/id_rsa
     - cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
     - ssh-keyscan -H $DEPLOY_SSH_SERVER >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
