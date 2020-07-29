@@ -38,4 +38,4 @@ deploy:
     - ssh-keyscan $DEPLOY_SSH_SERVER | sort -u - ~/.ssh/known_hosts -o ~/.ssh/known_hosts
     - '[[ -f /.dockerinit ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -A $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
+    - ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
