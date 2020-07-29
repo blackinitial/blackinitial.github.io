@@ -28,6 +28,7 @@ deploy:
   stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which sshpass || ( apt-get update -y && apt-get install sshpass -y )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - ls ~/.ssh -la
@@ -38,4 +39,4 @@ deploy:
     - ssh-keyscan $DEPLOY_SSH_SERVER | sort -u - ~/.ssh/known_hosts -o ~/.ssh/known_hosts
     - '[[ -f /.dockerinit ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
+    - sshpass -p $SSH_PASSWORD ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker pull $CI_REGISTRY_IMAGE:latest || true; docker run -p $PORT:$PORT -d $CI_REGISTRY_IMAGE:latest"
