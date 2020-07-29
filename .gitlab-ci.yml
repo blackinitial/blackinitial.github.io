@@ -27,8 +27,8 @@ build:
 deploy:
   stage: deploy
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - 'which sshpass || ( apt-get update -y && apt-get install sshpass -y )'
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - 'which sshpass || ( apk update && apk add sshpass )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - ls ~/.ssh -la
